@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector, useDispatch } from "react-redux";
+import RouteComp from "./routes/index";
+import Login from "./pages/login";
+import { isValidToken } from "./utils";
+import { authSuccess } from "./store/reducers/authSlice";
+import { error } from "./store/reducers/loaderSlice";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const dispatch = useDispatch();
+
+  const checkAuthToken = () => {
+    const token = localStorage.getItem("srimandir");
+    if (token) {
+      const validateToken = isValidToken(token);
+      if (validateToken.data) {
+        dispatch(authSuccess());
+      } else {
+        dispatch(error(validateToken.error));
+      }
+    }
+  };
+  checkAuthToken();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  return <>{isAuthenticated ? <RouteComp /> : <Login />}</>;
 }
 
 export default App;
