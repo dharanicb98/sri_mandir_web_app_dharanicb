@@ -2,23 +2,32 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authFail } from "../../store/reducers/authSlice";
 import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ChevronRight, User } from "../../icons";
 // import Cookies from "js-cookie";
 
 const Header = () => {
   const token = localStorage.getItem("token");
   const userDetails = jwtDecode(token);
+  const navigate = useNavigate();
   const { email, name, picture } = userDetails;
 
   const dispatch = useDispatch();
-  const handleGoToWebsite = () => {
-    window.open("https://www.srimandir.com/?lang=en");
-  };
+
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
     dispatch(authFail());
   };
+
+  
+  const handlePoojaNavigation = async () => {
+    navigate('/pooja')
+  }
+
+
+
+
 
   return (
     <header className="bg-white h-[70px] font-bold text-gray-900 w-[100%] z-[10] flex justify-between items-center px-[20px] fixed top-0 left-0 right-0 shadow-sm">
@@ -55,20 +64,93 @@ const Header = () => {
           alt="profile image"
           className="w-[37px] h-[37px] rounded-full cursor-pointer"
         />
-        <div
-          className={`absolute bg-white shadow-lg p-6 rounded-md flex flex-col  invisible group-hover:visible -left-[150px] w-[200px]`}
-        >
-          <span className="text-[20px] font-medium">{name && name}</span>
-          <span className="text-slate-500 text-[11px]">{email && email}</span>
-          <span className="cursor-pointer py-1" onClick={handleGoToWebsite}>
-            Go to Website
-          </span>
-          <hr />
-          <span onClick={handleLogOut} className="cursor-pointer">
-            Logout
-          </span>
+       
+
+        <div className="absolute invisible group-hover:visible w-[299px]  !-right-[10px] text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 block" >
+          <ul className="py-1 mb-[0px] bg-white" >
+            <div  className="overflow-y-auto sticky top-0 bg-white pt-2">
+              <ul className="mb-[0px] px-3">
+                <li className="pl-1">
+                  <a href="#" className="inline-flex justify-between w-full text-[#707070] hover:text-[#707070]">
+                    <span className="text-[16px] font-medium">Hello, Sri Mandir Bhakt</span>
+                  </a>
+                </li>
+                <li className="pl-1 py-2">
+                  <a href="#" className="text-[14px] font-medium text-[#707070] hover:text-[#707070]">
+                    Welcome to Sri Mandir Puja Seva
+                  </a>
+                </li>
+              </ul>
+              <hr />
+            </div>
+            <div className="w-full bg-white">
+              <div className="mt-3 mx-3">
+                <span className="text-[#707070] text-[12px] font-semibold">Account Details</span>
+                <button className="flex flex-row justify-between mt-3 w-full">
+                  <div className="flex ">
+                     {/* <User/> */}
+                    <span className="ml-[10px] text-[14px] font-medium text-[#111928] w-full">My profile</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <span className="ml-2 flex">
+                      <ChevronRight/>
+                    </span>
+                  </div>
+                </button>
+                <button className="flex flex-row justify-between mt-[19px] w-full">
+                  <div className="flex">
+            
+                    <span className="ml-[10px] text-[14px] font-medium text-[#111928]">My Puja Bookings</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <span className="ml-2 flex">
+                     <ChevronRight/>
+                    </span>
+                  </div>
+                </button>
+                <button className="flex flex-row justify-between mt-[19px] w-full" >
+                  <div className="flex">
+                    <span className="ml-[10px] text-[14px] font-medium text-[#111928]">My Ramotsav Bookings</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <span className="ml-2 flex">
+                      <ChevronRight/>
+                    </span>
+                  </div>
+                </button>
+                <a className="flex flex-row justify-between mt-[19px] w-full" href="#">
+                  <div onClick={handlePoojaNavigation} className="flex">
+                    <span className="ml-[10px] text-[14px] font-medium text-[#111928]">Book a Puja</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <span className="ml-2 flex">
+                     <ChevronRight/>
+                    </span>
+                  </div>
+                </a>
+                
+                <div className="flex flex-row justify-between mt-[19px] w-full">
+                <div onClick={handleLogOut} className="flex">
+                    <span className="ml-[10px] text-[14px] font-medium text-[#111928]">Logout</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <span className="ml-2 flex">
+                     <ChevronRight/>
+                    </span>
+                  </div>
+                </div>
+
+
+              </div>
+            
+            </div>
+          </ul>
         </div>
+
+    
+
       </div>
+      
     </header>
   );
 };
