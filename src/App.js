@@ -24,8 +24,8 @@ function App() {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // return <>{isAuthenticated ? <RouteComp /> : <Login />}</>;
-  return <RouteComp /> ;
+  return <>{isAuthenticated ? <RouteComp /> : <Login />}</>;
+  // return <RouteComp /> ;
 }
 
 export default App;
